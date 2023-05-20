@@ -22,6 +22,37 @@
     <link rel="stylesheet" href="./assets/styles.css">
 </head>
 <body>
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main>
+        <div id="search">
+            <h2>Search for a City:</h2>
+            <input type="text" placeholder="San Diego">
+            <button>Search</button>
+            <hr>
+            <div id="search-history"></div>
+        </div>
+
+        <div id="weather-info">
+            <div id="current-weather">
+                <h2 id="current-city"></h2>
+                <p class="temperature">Temp: </p>
+                <p class="wind-speed">Wind: </p>
+                <p class="humidity">Humidity: </p>
+            </div>
+            <div id="five-day-forecast">
+                <h3>5-Day Forecast:</h3>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </main>
+
     <script src="./assets/script.js"></script>
 </body>
 </html>
