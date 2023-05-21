@@ -14,3 +14,7 @@ button {
 .card {
     background-color: rgb(17, 21, 109);
 }
+
+img {
+    width: 3rem;
+}
