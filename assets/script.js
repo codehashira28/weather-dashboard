@@ -4,6 +4,8 @@ var city;
 
 var searchbtn = document.getElementById('searchbtn');
 
+var currentdate = dayjs().format('M/D/YYYY');
+
 //query url https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key};
 
 //icon url https://openweathermap.org/img/wn/10d@2x.png
@@ -47,8 +49,7 @@ function getFiveDays(latitude, longitude) {
     .then(function (data) {
         console.log(data);
         var weatherDays = [];
-        weatherDays.push(data.list[0]);
-        var date = data.list[0].dt_txt.split(' ')[0];
+        var date = dayjs(currentdate).format('YYYY-MM-DD');
        for(var i = 0; i < data.list.length-1; ++i) {
         if(data.list[i+1].dt_txt.split(' ')[0] !== date) {
             weatherDays.push(data.list[i+1]);
