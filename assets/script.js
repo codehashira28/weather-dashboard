@@ -6,6 +6,8 @@ var searchbtn = document.getElementById('searchbtn');
 
 var currentdate = dayjs().format('M/D/YYYY');
 
+var searchHistory = document.getElementById('search-history');
+
 //query url https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key};
 
 //icon url https://openweathermap.org/img/wn/10d@2x.png
@@ -20,6 +22,11 @@ function getWeather() {
     .then(function (data) {
         console.log(data);
         city = data.name;
+        var newCity = document.createElement('button');
+        newCity.textContent = city;
+        newCity.style.backgroundColor = 'lightgray';
+        newCity.style.marginBottom = '0.8rem';
+        searchHistory.appendChild(newCity);
         var icon = data.weather[0].icon;
         var temperature = data.main.temp;
         var windSpeed = data.wind.speed;
