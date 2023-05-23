@@ -5,9 +5,9 @@ var searchHistory = document.getElementById('search-history');
 var city;
 
 function getWeather() {
-    city = document.getElementById('city-search').value;
+    city = document.getElementById('city-search').value.trim();
     document.getElementById('city-search').value = "";
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial"; 
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
     fetch(queryURL)
     .then(function (response) {
         return response.json();
@@ -19,10 +19,7 @@ function getWeather() {
             var newCity = document.createElement('button');
             newCity.id = city.replace(' ', '-').toLowerCase();
             newCity.textContent = localStorage.getItem(newCity.id);
-            newCity.style.backgroundColor = 'lightgray';
-            newCity.style.marginBottom = '0.8rem';
-            newCity.addEventListener("click", getWeatherFromHistory);
-            searchHistory.appendChild(newCity);
+            formatHistory(newCity);
         }
         var icon = data.weather[0].icon;
         var temperature = data.main.temp;
@@ -44,7 +41,6 @@ function displayCurrent(city, icon, temperature, windSpeed, humidity) {
 }
 
 function getFiveDays(latitude, longitude) {
-    //url api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey + "&units=imperial";
     fetch(queryURL)
     .then(function (response) {
@@ -59,8 +55,6 @@ function getFiveDays(latitude, longitude) {
             date = data.list[i+1].dt_txt.split(' ')[0];
         }
        }
-
-       //console.log(weatherDays);
        for(var i = 0; i < 5; ++i) {
         document.getElementById('card-' + (i+1)).textContent = dayjs(weatherDays[i].dt_txt.split(' ')[0]).format('M/D/YYYY');
         document.getElementById('weather-icon-' + (i+1)).src = "https://openweathermap.org/img/wn/" + weatherDays[i].weather[0].icon + "@2x.png";
@@ -77,16 +71,21 @@ function getWeatherFromHistory(event) {
 }
 
 function displayHistory() {
-   for(var i = 0; i < localStorage.length; ++i) {
+if(localStorage.length > 0) {
+  for(var i = 0; i < localStorage.length; ++i) {
     var entry = document.createElement('button');
     entry.innerHTML = localStorage.getItem(localStorage.key(i));
     entry.id = localStorage.key(i);
-    entry.style.backgroundColor = 'lightgray';
-    entry.style.marginBottom = '0.8rem';
-    entry.addEventListener("click", getWeatherFromHistory);
-    searchHistory.appendChild(entry);
-
+    formatHistory(entry);
    }
+  }
+}
+
+function formatHistory(element) {
+element.style.backgroundColor = 'lightgray';
+    element.style.marginBottom = '0.8rem';
+    element.addEventListener("click", getWeatherFromHistory);
+    searchHistory.appendChild(element);
 }
 
 
