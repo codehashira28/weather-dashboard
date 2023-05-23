@@ -1,32 +1,29 @@
 var APIKey = '5247950f7c576368fc9eeff98c6e0b3a';
-
-var city;
-
 var searchbtn = document.getElementById('searchbtn');
-
 var currentdate = dayjs().format('M/D/YYYY');
-
 var searchHistory = document.getElementById('search-history');
-
-//query url https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key};
-
-//icon url https://openweathermap.org/img/wn/10d@2x.png
+var city;
 
 function getWeather() {
     city = document.getElementById('city-search').value;
+    document.getElementById('city-search').value = "";
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial"; 
     fetch(queryURL)
     .then(function (response) {
         return response.json();
       })
     .then(function (data) {
-        console.log(data);
         city = data.name;
-        var newCity = document.createElement('button');
-        newCity.textContent = city;
-        newCity.style.backgroundColor = 'lightgray';
-        newCity.style.marginBottom = '0.8rem';
-        searchHistory.appendChild(newCity);
+        if(!localStorage.hasOwnProperty(city.replace(' ', '-').toLowerCase())) {
+            localStorage.setItem(city.replace(' ', '-').toLowerCase(), city);
+            var newCity = document.createElement('button');
+            newCity.id = city.replace(' ', '-').toLowerCase();
+            newCity.textContent = localStorage.getItem(newCity.id);
+            newCity.style.backgroundColor = 'lightgray';
+            newCity.style.marginBottom = '0.8rem';
+            newCity.addEventListener("click", getWeatherFromHistory);
+            searchHistory.appendChild(newCity);
+        }
         var icon = data.weather[0].icon;
         var temperature = data.main.temp;
         var windSpeed = data.wind.speed;
@@ -54,7 +51,6 @@ function getFiveDays(latitude, longitude) {
         return response.json();
       })
     .then(function (data) {
-        console.log(data);
         var weatherDays = [];
         var date = dayjs(currentdate).format('YYYY-MM-DD');
        for(var i = 0; i < data.list.length-1; ++i) {
@@ -75,5 +71,24 @@ function getFiveDays(latitude, longitude) {
 ;    })
 }
 
+function getWeatherFromHistory(event) {
+    document.querySelector('#city-search').value = event.target.innerHTML;
+    getWeather();
+}
+
+function displayHistory() {
+   for(var i = 0; i < localStorage.length; ++i) {
+    var entry = document.createElement('button');
+    entry.innerHTML = localStorage.getItem(localStorage.key(i));
+    entry.id = localStorage.key(i);
+    entry.style.backgroundColor = 'lightgray';
+    entry.style.marginBottom = '0.8rem';
+    entry.addEventListener("click", getWeatherFromHistory);
+    searchHistory.appendChild(entry);
+
+   }
+}
+
 
 searchbtn.addEventListener("click", getWeather);
+displayHistory();
