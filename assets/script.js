@@ -6,6 +6,7 @@ var city;
 
 // function to get current day weather data from weather API
 // it also includes functions to display the current weather information and the 5-day forecast
+// the function also includes the formatHistory function to generate the search history section.
 
 function getWeather() {
     city = document.getElementById('city-search').value.trim();
@@ -98,7 +99,7 @@ if(localStorage.length > 0) {
   }
 }
 
-// function to set the formatting of the search history options and make history searches clickable to re-populate
+// function to generate and set the formatting of the search history options and make history searches clickable to re-populate
 // the data for that city.
 
 function formatHistory(element) {
