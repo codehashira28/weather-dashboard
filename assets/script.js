@@ -77,6 +77,8 @@ function getFiveDays(latitude, longitude) {
 ;    })
 }
 
+// function to re-populate weather information if a search history option is clicked.
+
 function getWeatherFromHistory(event) {
     document.querySelector('#city-search').value = event.target.innerHTML;
     getWeather();
@@ -96,7 +98,8 @@ if(localStorage.length > 0) {
   }
 }
 
-// function to set the formatting of the search history options.
+// function to set the formatting of the search history options and make history searches clickable to re-populate
+// the data for that city.
 
 function formatHistory(element) {
 element.style.backgroundColor = 'lightgray';
